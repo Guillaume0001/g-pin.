@@ -34,9 +34,15 @@ log = config["LOG_ID"]
 owner = config["OWNER_ID"]
 time_del = config["DEL_TIME"]
 
+activity = disnake.Activity(
+    name="the GLM6's server",
+    type=disnake.ActivityType.watching,
+)
+
 bot = commands.Bot(
     command_prefix=prefix,
     intents=disnake.Intents.all(),
+    activity=activity,
     case_insensitive=True
 )
 
@@ -66,7 +72,7 @@ async def on_ready():
     print(f'🔱 Ma version local: {bot_version}')
     print(f'🔱 Ma version en ligne: {bot_repo_version}')
     print(f"🔱 Version de Disnake: {disnake.__version__}")
-    print(f"🔱 Je fonctionne sur{platform.system()} {platform.release()} {os.name}")
+    print(f"🔱 Je fonctionne sur {platform.system()} {platform.release()} {os.name}")
     print(f"🔱 Version de python: {platform.python_version()}")
     print('===============================================')
 
@@ -75,7 +81,7 @@ for filename in os.listdir('./cogs'):
         cog_name = filename[:-3]
         try:
             bot.load_extension(f'cogs.{cog_name}')
-        except:
+        except Exception as e:
             print(f"🌪️  Erreur dans le chargement de l'extension '{cog_name}':\n\n{e}")
 
 bot.run(token)
