@@ -26,7 +26,7 @@ class registerCommand(commands.Cog):
             embed.description = "Une erreur est survenue lors de la communication avec la base de donnée, veuillez contacter un administrateur au plus vite: ```" + str(e) + "```"
             embed.colour = 0xFF0000
             await inter.response.send_message(embed=embed, ephemeral=True)
-        if result:
+        if results:
             try:
                 if role in inter.author.roles:
                     embed.description = "Tu ne peux pas t'inscrire si tu l'es déjà."
