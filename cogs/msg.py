@@ -10,7 +10,7 @@ class FonctionnementCommand(commands.Cog):
         print(f'🔩 /admin_msg a été chargé !')
 
     @commands.slash_command(name="admin_msg", description="Envoie le message selon l'id")
-    @commands.is_owner()
+    @commands.has_permission(manage_messages=True)
     async def admin_fonctionnement(self, inter, msg: int):
         embed =  disnake.Embed()
         title = "Fonctionnement de GLM6 - Private IPv6 Network"
