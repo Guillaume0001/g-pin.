@@ -26,7 +26,7 @@ class registerCommand(commands.Cog):
             embed.description = "An error occurred while communicating with the database, please contact an administrator as soon as possible: ```" + str(e) + "```"
             embed.colour = disnake.Colour.red()
             await inter.response.send_message(embed=embed, ephemeral=True)
-        if result:
+        if results:
             try:
                 if role in inter.author.roles:
                     embed.description = "You cannot register if you already are."
