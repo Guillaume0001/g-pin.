@@ -63,17 +63,16 @@ async def on_ready():
     if bot_version != bot_repo_version:
         print('===============================================')
         print('🛑 ATTENTION')
-        print('🛑 Je ne suis pas sur la dernière version !')
-        print('🛑 Met moi à jour !')
-        print('🛑 Utilise "git fetch && git pull" pour me mettre à jour.')
+        print('🛑 You are not using the latest version !')
+        print('🛑 Please update the bot with "git fetch && git pull".')
     print('===============================================')    
-    print(f"🔱 Prêt pour parcourir ton serveur !")
-    print(f'🔱 Je suis {nbot} | {bot.user.id}')
-    print(f'🔱 Ma version local: {bot_version}')
-    print(f'🔱 Ma version en ligne: {bot_repo_version}')
-    print(f"🔱 Version de Disnake: {disnake.__version__}")
-    print(f"🔱 Je fonctionne sur {platform.system()} {platform.release()} {os.name}")
-    print(f"🔱 Version de python: {platform.python_version()}")
+    print(f"🔱 Your bot is ready !")
+    print(f'🔱 Logged in as {nbot} | {bot.user.id}')
+    print(f'🔱 Local version: {bot_version}')
+    print(f'🔱 Online version: {bot_repo_version}')
+    print(f"🔱 Disnake version: {disnake.__version__}")
+    print(f"🔱 Running on {platform.system()} {platform.release()} {os.name}")
+    print(f"🔱 Python version: {platform.python_version()}")
     print('===============================================')
 
 for filename in os.listdir('./cogs'):
@@ -82,6 +81,6 @@ for filename in os.listdir('./cogs'):
         try:
             bot.load_extension(f'cogs.{cog_name}')
         except Exception as e:
-            print(f"🌪️  Erreur dans le chargement de l'extension '{cog_name}':\n\n{e}")
+            print(f"🌪️  Error when loading extension '{cog_name}':\n\n{e}")
 
 bot.run(token)

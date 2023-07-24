@@ -10,12 +10,12 @@ class registerCommand(commands.Cog):
     async def on_ready(self):
         print(f'🔩 /register has been loaded') 
 
-    @commands.slash_command(name='register', description='Inscription au système.')
+    @commands.slash_command(name='register', description='System registration.')
     async def register(self, inter, email: str, password: str):
         role_id = 1130975208061288450
         role = disnake.utils.get(inter.guild.roles, id=role_id)
         embed = disnake.Embed(
-            title="Inscription au programme",
+            title="Creating your account",
         )
         conn = sqlite3.connect('bdd.db')
         cur = conn.cursor()
@@ -23,46 +23,46 @@ class registerCommand(commands.Cog):
             cur.execute("SELECT * FROM users WHERE client_id = " + str(inter.author.id))
             result = cur.fetchall()
         except Exception as e:
-            embed.description = "Une erreur est survenue lors de la communication avec la base de donnée, veuillez contacter un administrateur au plus vite: ```" + str(e) + "```"
-            embed.colour = 0xFF0000
+            embed.description = "An error occurred while communicating with the database, please contact an administrator as soon as possible: ```" + str(e) + "```"
+            embed.colour = disnake.Colour.red()
             await inter.response.send_message(embed=embed, ephemeral=True)
         if result:
             try:
                 if role in inter.author.roles:
-                    embed.description = "Tu ne peux pas t'inscrire si tu l'es déjà."
-                    embed.colour = 0xFF0000
+                    embed.description = "You cannot register if you already are."
+                    embed.colour = disnake.Colour.red()
                     await inter.response.send_message(embed=embed, ephemeral=True)
                 else:
                     await inter.author.add_roles(role)
-                    embed.description = "Tu es sur la base de donnée mais tu n'as pas le rôle, désormais, tu l'as !"
-                    embed.colour = 0x00FF00
+                    embed.description = "You are on the database but you don't have the role, now you have it!"
+                    embed.colour = disnake.Colour.green()
                     await inter.response.send_message(embed=embed, ephemeral=True)
             except Exception as e:
-                embed.description = "Une erreur est survenue lors de la vérification de vos informations, veuillez contacter un administrateur au plus vite: ```" + str(e) + "```"
-                embed.colour = 0xFF0000
+                embed.description = "An error occurred while verifying your information, please contact an administrator as soon as possible: ```" + str(e) + "```"
+                embed.colour = disnake.Colour.red()
                 await inter.response.send_message(embed=embed, ephemeral=True)
         else:
             try:
                 if role in inter.author.roles:
                     await inter.author.remove_roles(role)
-                    embed.description = "Tu n'es pas sur la base de donnée mais tu as le rôle, désormais, tu n'es plus sur la base de donnée !"
-                    embed.colour = 0xFF0000
+                    embed.description = "You are not on the database but you have the role, now you are no longer on the database!"
+                    embed.colour = disnake.Colour.red()
                     await inter.response.send_message(embed=embed, ephemeral=True)
                 else:
                     try:
                         cur.execute("INSERT INTO users(client_id, email, password) VALUES (?, ?, ?)", (str(inter.author.id), email, password))
                         conn.commit()
                         await inter.author.add_roles(role)
-                        embed.description = "Ton inscription au programme est validé ! Tu peux désaprésent commander des services et gagner des points !"
-                        embed.colour = 0x00FF00
+                        embed.description = "Your registration for the program is validated! Now you can order services and earn points!"
+                        embed.colour = disnake.Colour.green()
                         await inter.response.send_message(embed=embed, ephemeral=True)
                     except Exception as e:
-                        embed.description = "Une erreur est survenue lors de la communication avec la base de donnée, veuillez contacter un administrateur au plus vite: ```" + str(e) + "```"
-                        embed.colour = 0xFF0000
+                        embed.description = "An error occurred while communicating with the database, please contact an administrator as soon as possible: ```" + str(e) + "```"
+                        embed.colour = disnake.Colour.red()
                         await inter.response.send_message(embed=embed, ephemeral=True)
             except Exception as e:
-                embed.description = "Une erreur est survenue lors de la vérification de vos informations, veuillez contacter un administrateur au plus vite: ```" + str(e) + "```"
-                embed.colour = 0xFF0000
+                embed.description = "An error occurred while verifying your information, please contact an administrator as soon as possible: ```" + str(e) + "```"
+                embed.colour = disnake.Colour.red()
                 await inter.response.send_message(embed=embed, ephemeral=True)
         conn.close()
 
