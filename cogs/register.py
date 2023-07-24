@@ -21,7 +21,7 @@ class registerCommand(commands.Cog):
         cur = conn.cursor()
         try:
             cur.execute("SELECT * FROM users WHERE client_id = " + str(inter.author.id))
-            result = cur.fetchall()
+            results = cur.fetchall()
         except Exception as e:
             embed.description = "An error occurred while communicating with the database, please contact an administrator as soon as possible: ```" + str(e) + "```"
             embed.colour = disnake.Colour.red()
