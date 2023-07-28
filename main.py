@@ -13,11 +13,13 @@ if not os.path.exists(config_file_path):
         token = input("Enter the bot's token: ")
         prefix = input("Enter the bot's prefix: ")
         log_id = input("Enter the log's channel ID: ")
+        registration_id = input("Enter the registration's channel ID: ")
         id_client = input("Enter your discord ID: ")
         config_data = {
             "TOKEN": token,
             "PREFIX": prefix,
             "LOG_ID": log_id,
+            "REGISTRATION_ID": registration_id,
             "OWNER_ID": id_client,
             "DEL_TIME": 3
         }
