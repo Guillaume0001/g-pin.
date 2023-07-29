@@ -9,7 +9,7 @@ class FonctionnementCommand(commands.Cog):
     async def on_ready(self):
         print(f'🔩 /admin_msg a été chargé !')
 
-    @commands.slash_command(name="a_msg", description="Envoie le message selon l'id")
+    @commands.slash_command(name="a_msg", description="Admin Only; Send a message")
     @commands.has_permissions(manage_messages=True)
     async def admin_fonctionnement(self, inter, msg: int):
         embed =  disnake.Embed()
@@ -20,8 +20,8 @@ class FonctionnementCommand(commands.Cog):
             embed.description = "Pour accéder au différent service de GLM, il faut vous inscrire au service.\n \n Utiliser la commande /register pour vous inscrire au prorgamme, vous aurez en suite une suite de salon qui apparaîtra et celui-ci disparaîtra. Vous devrez suivre ces différents salons."
             embed.color = color
         else:
-            embed.title = "Erreur !"
-            embed.description = "L'ID du message rentré est incorrecte !"
+            embed.title = "Error !"
+            embed.description = "The ID of the message isn't correct !"
             embed.color = disnake.Colour.red()
         
         embed.set_footer(
