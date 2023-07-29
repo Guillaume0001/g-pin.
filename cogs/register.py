@@ -108,6 +108,7 @@ class registerCommands(commands.Cog):
                 embed.description = "An error occurred while verifying your information, please contact an administrator as soon as possible: ```" + str(e) + "```"
                 embed.colour = disnake.Colour.red()
                 await inter.response.send_message(embed=embed, ephemeral=True)
+        conn.close()
 
 
     @commands.slash_command(name="a_register", description="Admin Only; Accept or reject a request.")
@@ -230,7 +231,7 @@ class registerCommands(commands.Cog):
                     embed.description = "An error occurred while communicating with the database: ```" + str(e) + "```"
                     embed.colour = disnake.Colour.red()
                     await inter.response.send_message(embed=embed, ephemeral=True)
-
+            conn.close()
             
             
 
