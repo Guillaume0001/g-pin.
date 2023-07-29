@@ -1,5 +1,7 @@
 import disnake
 from disnake.ext import commands
+import os
+import json
 
 class FonctionnementCommand(commands.Cog):
     def __init__(self, bot):
@@ -12,6 +14,9 @@ class FonctionnementCommand(commands.Cog):
     @commands.slash_command(name="a_msg", description="Admin Only; Send a message")
     @commands.has_permissions(manage_messages=True)
     async def admin_fonctionnement(self, inter, msg: int):
+        config_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+        with open(config_file_path, 'r') as config_file:
+            config = json.load(config_file)
         embed =  disnake.Embed()
         title = "Fonctionnement de GLM6 - Private IPv6 Network"
         color = disnake.Colour.random()
@@ -25,7 +30,7 @@ class FonctionnementCommand(commands.Cog):
             embed.color = disnake.Colour.red()
         
         embed.set_footer(
-            text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
+            text="©" + config["OWNER_NAME"] + " - " + config["PROJECT_NAME"],
             icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
         )
         await inter.channel.send(embed=embed)

@@ -12,7 +12,6 @@ class registerCommands(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'🔩 registration extension has been loaded') 
-
     @commands.slash_command(name='register', description='System registration.')
     async def registerCommand(self, inter, email: str, name: str, surname: str):
         config_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
@@ -24,7 +23,7 @@ class registerCommands(commands.Cog):
         user_id = inter.author.id
         embed = disnake.Embed()
         embed.set_footer(
-            text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
+            text="©" + config["OWNER_NAME"] + " - " + config["PROJECT_NAME"],
             icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
         )
         conn = sqlite3.connect('bdd.db')
@@ -117,12 +116,16 @@ class registerCommands(commands.Cog):
 
     @commands.slash_command(name="a_register", description="Admin Only; Accept or reject a request.")
     async def reponse(self, inter, user: disnake.User, status: int):
-        role_id = 1130975208061288450
+        config_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+        with open(config_file_path, 'r') as config_file:
+            config = json.load(config_file)
+
+        role_id = config["REGISTRATION_ID"]
         role = disnake.utils.get(inter.guild.roles, id=role_id)
         user_msg = self.bot.get_user(user.id)
         embed = disnake.Embed()
         embed.set_footer(
-            text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
+            text="©" + config["OWNER_NAME"] + " - " + config["PROJECT_NAME"],
             icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
         )
         conn = sqlite3.connect('bdd.db')

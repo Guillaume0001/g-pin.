@@ -1,6 +1,8 @@
 import disnake
 from disnake.ext import commands
 import sqlite3
+import json
+import os
 
 class unSuscribeCommand(commands.Cog):
     def __init__(self, bot):
@@ -12,7 +14,10 @@ class unSuscribeCommand(commands.Cog):
 
     @commands.slash_command(name='unsuscribe', description="Delete your account of the manager.")
     async def del_account(self, inter):
-        role_id = 1130975208061288450
+        config_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.json')
+        with open(config_file_path, 'r') as config_file:
+            config = json.load(config_file)
+        role_id = config["REGISTRATION_ID"]
         role = disnake.utils.get(inter.guild.roles, id=role_id)
         embed = disnake.Embed(
             title="Deleting your account",
