@@ -18,6 +18,10 @@ class FonctionnementCommand(commands.Cog):
         with open(config_file_path, 'r') as config_file:
             config = json.load(config_file)
         embed =  disnake.Embed()
+        embed.set_footer(
+            text="© " + config["OWNER_NAME"] + " - " + config["PROJECT_NAME"],
+            icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
+        )
         title = "Fonctionnement de GLM6 - Private IPv6 Network"
         color = disnake.Colour.random()
         if msg == 1:
@@ -28,11 +32,7 @@ class FonctionnementCommand(commands.Cog):
             embed.title = "Error !"
             embed.description = "The ID of the message isn't correct !"
             embed.color = disnake.Colour.red()
-        
-        embed.set_footer(
-            text="©" + config["OWNER_NAME"] + " - " + config["PROJECT_NAME"],
-            icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
-        )
+
         await inter.channel.send(embed=embed)
         await inter.response.send_message(content="Le message n°" + str(msg) + " a bien été envoyé !", ephemeral=True)
 

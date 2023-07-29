@@ -22,6 +22,10 @@ class unSuscribeCommand(commands.Cog):
         embed = disnake.Embed(
             title="Deleting your account",
         )
+        embed.set_footer(
+            text="© " + config["OWNER_NAME"] + " - " + config["PROJECT_NAME"],
+            icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
+        )
         conn = sqlite3.connect('bdd.db')
         cur = conn.cursor()
         try:
