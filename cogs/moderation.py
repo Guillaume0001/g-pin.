@@ -123,7 +123,7 @@ class moderationCommands(commands.Cog):
         conn.close()
 
     @commands.slash_command(name="a_unwarn", description="Admin Only; Delete a warn from a user.")
-    async def warn(self, inter, user: disnake.User, id: int):
+    async def unwarn(self, inter, user: disnake.User, id: int):
         embed = disnake.Embed()
         embed.set_footer(
             text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
@@ -133,23 +133,51 @@ class moderationCommands(commands.Cog):
         cur = conn.cursor()
 
         try:
-            cur.execute("DELETE FROM moderation WHERE user = ? AND id = ?", (str(user.id), int(id)))
-            conn.commit()
-            try:
-                embed.title = "Success"
-                embed.description = "User: " + user.display_name + " (a.k.a " + user.name + ") has been succesfuly unwarned !"
-                embed.colour = disnake.Colour.green()
-                await inter.response.send_message(embed=embed, ephemeral=True)
-            except Exception as e:
+            cur.execute("SELECT * FROM moderation WHERE user = ?", (str(user.id),))
+            result = cur.fetchall()
+            if not result:
                 embed.title = "Error"
-                embed.description = "An error occurred while sending your message."
+                embed.description = "This user haven't any warning."
                 embed.colour = disnake.Colour.red()
                 await inter.response.send_message(embed=embed, ephemeral=True) 
+            else:
+                try:
+                    cur.execute("SELECT * FROM moderation WHERE user = ? AND id = ?", (str(user.id), int(id)))
+                    result = cur.fetchall()
+                    if not result:
+                        embed.title = "Error"
+                        embed.description = "This user haven't any warn with ID: ``" + id + "``."
+                        embed.colour = disnake.Colour.red()
+                        await inter.response.send_message(embed=embed, ephemeral=True)
+                    else:
+                        try:
+                            cur.execute("DELETE FROM moderation WHERE user = ? AND id = ?", (str(user.id), int(id)))
+                            conn.commit()
+                            try:
+                                embed.title = "Success"
+                                embed.description = "User: " + user.display_name + " (a.k.a " + user.name + ") has been succesfuly unwarned !"
+                                embed.colour = disnake.Colour.green()
+                                await inter.response.send_message(embed=embed, ephemeral=True)
+                            except Exception as e:
+                                embed.title = "Error"
+                                embed.description = "An error occurred while sending your message."
+                                embed.colour = disnake.Colour.red()
+                                await inter.response.send_message(embed=embed, ephemeral=True)
+                        except Exception as e:
+                            embed.title = "Error"
+                            embed.description = "An error occurred while communicating with the database: ```" + str(e) + "```"
+                            embed.colour = disnake.Colour.red()
+                            await inter.response.send_message(embed=embed, ephemeral=True)
+                except Exception as e:
+                    embed.title = "Error"
+                    embed.description = "An error occurred while communicating with the database: ```" + str(e) + "```"
+                    embed.colour = disnake.Colour.red()
+                    await inter.response.send_message(embed=embed, ephemeral=True)
         except Exception as e:
-            embed.title = "Error"
-            embed.description = "An error occurred while communicating with the database: ```" + str(e) + "```"
-            embed.colour = disnake.Colour.red()
-            await inter.response.send_message(embed=embed, ephemeral=True)
+           embed.title = "Error"
+           embed.description = "An error occurred while communicating with the database: ```" + str(e) + "```"
+           embed.colour = disnake.Colour.red()
+           await inter.response.send_message(embed=embed, ephemeral=True)
         conn.close()
 
 
