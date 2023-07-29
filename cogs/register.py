@@ -5,7 +5,7 @@ import requests
 import os
 import json
 
-class registerCommand(commands.Cog):
+class registerCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -235,4 +235,4 @@ class registerCommand(commands.Cog):
             
 
 def setup(bot):
-    bot.add_cog(registerCommand(bot))
+    bot.add_cog(registerCommands(bot))
