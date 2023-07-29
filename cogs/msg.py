@@ -9,7 +9,7 @@ class FonctionnementCommand(commands.Cog):
     async def on_ready(self):
         print(f'🔩 /admin_msg a été chargé !')
 
-    @commands.slash_command(name="admin_msg", description="Envoie le message selon l'id")
+    @commands.slash_command(name="a_msg", description="Envoie le message selon l'id")
     @commands.has_permissions(manage_messages=True)
     async def admin_fonctionnement(self, inter, msg: int):
         embed =  disnake.Embed()
