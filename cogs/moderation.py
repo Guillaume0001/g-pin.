@@ -122,6 +122,36 @@ class moderationCommands(commands.Cog):
             await inter.response.send_message(embed=embed, ephemeral=True)
         conn.close()
 
+    @commands.slash_command(name="a_unwarn", description="Admin Only; Delete a warn from a user.")
+    async def warn(self, inter, user: disnake.User, id: int):
+        embed = disnake.Embed()
+        embed.set_footer(
+            text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
+            icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
+        )
+        conn = sqlite3.connect('bdd.db')
+        cur = conn.cursor()
+
+        try:
+            cur.execute("DELETE FROM moderation WHERE user = ? & id = ?", (str(user.id), int(id)))
+            conn.commit()
+            try:
+                embed.title = "Success"
+                embed.description = "User: " + user.display_name + " (a.k.a " + user.name + ") has been succesfuly unwarned !"
+                embed.colour = disnake.Colour.green()
+                await inter.response.send_message(embed=embed, ephemeral=True)
+            except Exception as e:
+                embed.title = "Error"
+                embed.description = "An error occurred while sending your message."
+                embed.colour = disnake.Colour.red()
+                await inter.response.send_message(embed=embed, ephemeral=True) 
+        except Exception as e:
+            embed.title = "Error"
+            embed.description = "An error occurred while communicating with the database: ```" + str(e) + "```"
+            embed.colour = disnake.Colour.red()
+            await inter.response.send_message(embed=embed, ephemeral=True)
+        conn.close()
+
 
 
 def setup(bot):
