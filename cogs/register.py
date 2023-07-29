@@ -172,7 +172,7 @@ class registerCommands(commands.Cog):
                         embed.colour = disnake.Colour.red()
                         await inter.response.send_message(embed=embed, ephemeral=True)        
                     try:
-                        cur.execute("INSERT INTO users(client_id, name, surname, email, password) VALUES (?, ?, ?, ?, ?)", (str(user.id), str(name), str(surname), str(email), str(passwd)))
+                        cur.execute("INSERT INTO users(client_id, name, surname, email, password, money, last_earn) VALUES (?, ?, ?, ?, ?, ?, ?)", (str(user.id), str(name), str(surname), str(email), str(passwd), str("0"), str("0")))
                         conn.commit()
                         try:
                             cur.execute("DELETE FROM requests WHERE client_id = ?", (str(user.id),))
