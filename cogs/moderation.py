@@ -180,7 +180,63 @@ class moderationCommands(commands.Cog):
            await inter.response.send_message(embed=embed, ephemeral=True)
         conn.close()
 
+    @commands.slash_command(name="a_kick", description="Admin_only; Kick a user of the guild.")
+    async def kick(self, inter, user: disnake.User, reason: str):
+        embed = disnake.Embed()
+        embed.set_footer(
+            text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
+            icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
+        )
+        conn = sqlite3.connect('bdd.db')
+        cur = conn.cursor()
+        user_msg = self.bot.get_user(user.id)
+        today = date.today()
+        request = requests.get("https://api.motdepasse.xyz/create/?include_digits&include_lowercase&include_uppercase&password_length=8&quantity=1")
 
+        result = request.json()
+        if request.status_code == 200:
+            secret = result['passwords']
+        else:
+            embed.title = "Error"
+            embed.description = "An error occurred while communicating with motdepasse.xyz api."
+            embed.colour = disnake.Colour.red()
+            await inter.response.send_message(embed=embed, ephemeral=True) 
+        try:
+            cur.execute("INSERT INTO moderation(user, reason, type, date, secret) VALUES (?, ?, ?, ?, ?)", (str(user.id), str(reason), str("KICK"), str(today), str(secret)))
+            conn.commit()
+            try:
+                embed.title = "Oh Oh"
+                embed.description = "You were kicked from GLM6 - Private IPv6 Network ! You can join the server with the folowing address: **https://discord.glm6.fr/** .\n\nKings regards."
+                embed.colour = disnake.Colour.red()
+                await user_msg.send(embed=embed)
+                try:
+                    await inter.guild.kick(user, reason=reason)
+                    try:
+                        embed.title = "Success"
+                        embed.description = "User: " + user.display_name + " (a.k.a " + user.name + ") has been succesfuly kicked !"
+                        embed.colour = disnake.Colour.red()
+                        await inter.response.send_message(embed=embed, ephemeral=True)
+                    except Exception as e:
+                        embed.title = "Error"
+                        embed.description = "An error occurred while sending your message."
+                        embed.colour = disnake.Colour.red()
+                        await inter.response.send_message(embed=embed, ephemeral=True) 
+                except Exception as e:
+                    embed.title = "Error"
+                    embed.description = "An error occurred while kicking user."
+                    embed.colour = disnake.Colour.red()
+                    await inter.response.send_message(embed=embed, ephemeral=True) 
+            except Exception as e:
+                embed.title = "Error"
+                embed.description = "An error occurred while sending the message to the user."
+                embed.colour = disnake.Colour.red()
+                await inter.response.send_message(embed=embed, ephemeral=True) 
+        except Exception as e:
+            embed.title = "Error"
+            embed.description = "An error occurred while communicating with the database: ```" + str(e) + "```"
+            embed.colour = disnake.Colour.red()
+            await inter.response.send_message(embed=embed, ephemeral=True)
+        conn.close()
 
 def setup(bot):
     bot.add_cog(moderationCommands(bot))
