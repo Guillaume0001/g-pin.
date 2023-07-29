@@ -133,7 +133,7 @@ class moderationCommands(commands.Cog):
         cur = conn.cursor()
 
         try:
-            cur.execute("DELETE FROM moderation WHERE user = ? & id = ?", (str(user.id), int(id)))
+            cur.execute("DELETE FROM moderation WHERE user = ? AND id = ?", (str(user.id), int(id)))
             conn.commit()
             try:
                 embed.title = "Success"
