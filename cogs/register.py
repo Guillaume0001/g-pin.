@@ -23,6 +23,10 @@ class registerCommands(commands.Cog):
         role = disnake.utils.get(inter.guild.roles, id=role_id)
         user_id = inter.author.id
         embed = disnake.Embed()
+        embed.set_footer(
+            text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
+            icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
+        )
         conn = sqlite3.connect('bdd.db')
         cur = conn.cursor()
         try:
@@ -117,6 +121,10 @@ class registerCommands(commands.Cog):
         role = disnake.utils.get(inter.guild.roles, id=role_id)
         user_msg = self.bot.get_user(user.id)
         embed = disnake.Embed()
+        embed.set_footer(
+            text="© Guillaume MALEYRAT - GLM6 Private IPv6 Network",
+            icon_url="https://cdn.discordapp.com/avatars/1132715398979141742/37077cb78bd9aed18926870d452447dd.webp?size=32",
+        )
         conn = sqlite3.connect('bdd.db')
         cur = conn.cursor()
         
