@@ -1,3 +1,6 @@
 ./config.json
 ./bdd.db-journal
 ./cogs/__pycache__/*
+
+.venv/*
+.env/*
